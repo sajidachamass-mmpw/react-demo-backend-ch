@@ -18,4 +18,4 @@ Route::get('/roles', 'App\Http\Controllers\User\RoleController@index');
 Route::post('/user/{id}/edit', 'App\Http\Controllers\User\UserController@edit');
 Route::post('/add-user', 'App\Http\Controllers\User\UserController@save');
 Route::post('/update-user', 'App\Http\Controllers\User\UserController@updateUser');
-Route::post('/delete-user', 'App\Http\Controllers\User\UserController@deleteUser');
+Route::delete('/user/{id}', 'App\Http\Controllers\User\UserController@destroy');
