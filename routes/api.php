@@ -24,3 +24,9 @@ Route::post('/role/{id}/edit', 'App\Http\Controllers\User\RoleController@edit');
 Route::post('/update-role', 'App\Http\Controllers\User\RoleController@updateRole');
 Route::post('/add-role', 'App\Http\Controllers\User\RoleController@save');
 Route::delete('/role/{id}', 'App\Http\Controllers\User\RoleController@destroy');
+
+Route::get('/permissions', 'App\Http\Controllers\User\PermissionController@index')->withoutMiddleware([EnsureTokenIsValid::class]);;
+Route::post('/permission/{id}/edit', 'App\Http\Controllers\User\PermissionController@edit');
+Route::post('/update-permission', 'App\Http\Controllers\User\PermissionController@updateRole');
+Route::post('/add-permission', 'App\Http\Controllers\User\PermissionController@save');
+Route::delete('/permission/{id}', 'App\Http\Controllers\User\PermissionController@destroy');

@@ -5,10 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RolePostRequest;
 use App\Models\User\Role;
-use App\Models\User\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\View;
 use App\Http\Resources\RoleCollection;
 
 class RoleController extends Controller
