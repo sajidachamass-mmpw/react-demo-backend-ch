@@ -7,11 +7,13 @@ use App\Http\Requests\RolePostRequest;
 use App\Models\User\Role;
 use Illuminate\Http\Request;
 use App\Http\Resources\RoleCollection;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
     public function index()
     {
+        $test=Role::with('permissions')->paginate();
         return RoleCollection::collection(Role::all());
     }
 

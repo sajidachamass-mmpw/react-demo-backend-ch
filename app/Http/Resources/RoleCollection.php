@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\Permission\Models\Permission;
 
 class RoleCollection extends JsonResource
 {
@@ -17,6 +18,7 @@ class RoleCollection extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'permissions' => $this->permissions,
         ];
     }
 }

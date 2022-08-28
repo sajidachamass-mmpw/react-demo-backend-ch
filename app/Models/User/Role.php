@@ -2,19 +2,12 @@
 
 namespace App\Models\User;
 
+use App\Models\Traits\CanMonita;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role as BaseRole;
 
-class Role extends Model
+class Role extends BaseRole
 {
-    use HasFactory;
-
-    protected $table = 'roles';
-    protected $guarded = ['id'];
-
-    public function __construct(array $attributes = [])
-    {
-        $attributes['guard_name'] = $attributes['guard_name'] ?? config('auth.defaults.guard');
-        parent::__construct($attributes);
-    }
+    use CanMonita;
 }
