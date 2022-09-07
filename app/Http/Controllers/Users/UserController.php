@@ -68,9 +68,29 @@ class UserController extends Controller
 
        return $user ;
     }
-    public function store( Request $request )
+    public function store( UserPostRequest $request )
     {
+        $validated = $request->validated();
 
+
+        if (!$validated) {
+            return 'error';
+        }
+        $selectedRoles = Role::find($request->get('role'))->name;
+
+        $user = User::create(
+            [
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'password' => Hash::make($request->get('password')),
+                'slug'=>'',
+            ]
+        );
+
+
+        $user->syncRoles($selectedRoles);
+
+        return $user ;
     }
 
 
@@ -91,9 +111,9 @@ class UserController extends Controller
      * @param  \App\Models\User\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit(Request $request,$id)
     {
-        return new UserCollection(User::findOrFail($request->get('id')));
+        return new UserCollection(User::findOrFail($id));
     }
 
     /**
@@ -103,9 +123,23 @@ class UserController extends Controller
      * @param  \App\Models\User\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserPostRequest $request, User $user)
     {
-        //
+        $validated = $request->validated();
+        if (!$validated) {
+            return 'error';
+        }
+
+        $selectedRoles = Role::find($request->get('role'))->name;
+        $user->update( $request->only( [ 'name', 'email' ] ) );
+
+        if ( $request->has( 'password' ) ) {
+            $user->password = $request->get( 'password' );
+        }
+        $user->save();
+        $user->syncRoles( $selectedRoles );
+
+        return $user;
     }
     public function updateUser(UserPostRequest $request)
     {
@@ -135,9 +169,8 @@ class UserController extends Controller
      * @param  \App\Models\User\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user=User::FindorFail($id);
         $user->delete();
     }
 }

@@ -23,9 +23,10 @@ class UserPostRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             'name' => 'required',
-            'email' =>'required|unique:users,email,'.$this->get('id'),
+            'email' =>'required|unique:users,email,'.$this->user->id,
             'password' => 'required',
             'role' => 'required|exists:roles,id',
         ];

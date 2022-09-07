@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers\Roles;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RolePostRequest;
@@ -13,7 +13,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $test=Role::with('permissions')->paginate();
+       // Role::with('permissions')->paginate();
         return RoleCollection::collection(Role::all());
     }
 
