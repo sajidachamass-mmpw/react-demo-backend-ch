@@ -17,28 +17,24 @@ class RoleController extends Controller
         return RoleCollection::collection(Role::all());
     }
 
-    public function edit(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
     {
-        return new RoleCollection(Role::findOrFail($request->get('id')));
+
     }
 
-    public function updateRole(RolePostRequest $request)
-    {
-        $role = Role::find($request->get('id'));
-        $name = $request->get('name');
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \App\Http\Requests\RolePostRequest  $request
+     * @return \Illuminate\Http\Response
+     */
 
-        $validated = $request->validated();
-        if (!$validated) {
-            return 'error';
-        }
-
-        $role->name = $name;
-        $role->save();
-
-        return $role;
-    }
-
-    public function save(RolePostRequest $request)
+    public function store(RolePostRequest $request)
     {
 
         $name = $request->get('name');
@@ -56,9 +52,37 @@ class RoleController extends Controller
         return $role;
     }
 
-    public function destroy($id)
+    public function edit(Request $request,$id)
     {
-        $role = Role::FindorFail($id);
+        return new RoleCollection(Role::findOrFail($id));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\RolePostRequest  $request
+     * @param  \App\Models\User\Role  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function update(RolePostRequest $request, Role $role)
+    {
+        $name = $request->get('name');
+
+        $validated = $request->validated();
+        if (!$validated) {
+            return 'error';
+        }
+
+        $role->name = $name;
+        $role->save();
+
+        return $role;
+    }
+
+
+
+    public function destroy(Role $role)
+    {
         $role->delete();
     }
 

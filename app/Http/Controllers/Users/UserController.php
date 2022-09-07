@@ -44,30 +44,7 @@ class UserController extends Controller
      * @param  \App\Http\Requests\UserPostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function save(UserPostRequest  $request){
 
-        $validated = $request->validated();
-
-
-        if (!$validated) {
-            return 'error';
-        }
-        $selectedRoles = Role::find($request->get('role'))->name;
-
-        $user = User::create(
-            [
-                'name' => $request->get('name'),
-                'email' => $request->get('email'),
-                'password' => Hash::make($request->get('password')),
-                'slug'=>'',
-            ]
-        );
-
-
-        $user->syncRoles($selectedRoles);
-
-       return $user ;
-    }
     public function store( UserPostRequest $request )
     {
         $validated = $request->validated();
@@ -119,7 +96,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\UserPostRequest  $request
      * @param  \App\Models\User\User  $user
      * @return \Illuminate\Http\Response
      */
@@ -141,27 +118,7 @@ class UserController extends Controller
 
         return $user;
     }
-    public function updateUser(UserPostRequest $request)
-    {
 
-        $user  = User::find($request->get('id'));
-
-        $validated = $request->validated();
-        if (!$validated) {
-            return 'error';
-        }
-
-        $selectedRoles = Role::find($request->get('role'))->name;
-        $user->update( $request->only( [ 'name', 'email' ] ) );
-
-        if ( $request->has( 'password' ) ) {
-            $user->password = $request->get( 'password' );
-        }
-        $user->save();
-        $user->syncRoles( $selectedRoles );
-
-       return $user;
-    }
 
     /**
      * Remove the specified resource from storage.
