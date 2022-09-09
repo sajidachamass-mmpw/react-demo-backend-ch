@@ -8,14 +8,22 @@ use App\Models\User\Role;
 use Illuminate\Http\Request;
 use App\Http\Resources\RoleCollection;
 use Spatie\Permission\Models\Permission;
+use App\Services\Roles\RoleService;
 
 class RoleController extends Controller
 {
+    protected $roleService;
+
+    public function __construct(RoleService $roleService)
+    {
+        $this->roleService = $roleService;
+    }
+
     public function index()
     {
        // Role::with('permissions')->paginate();
-
-        return  ['roles'=>RoleCollection::collection(Role::paginate(10)),'count'=>Role::count()];
+        $count=$this->roleService->count(Role::all());
+        return  ['roles'=>RoleCollection::collection(Role::paginate(10)),'count'=>$count];
     }
 
     /**
@@ -37,19 +45,14 @@ class RoleController extends Controller
 
     public function store(RolePostRequest $request)
     {
-
-        $name = $request->get('name');
         $validated = $request->validated();
 
         if (!$validated) {
             return 'error';
         }
 
-        $role = new Role();
-        $role->name = $name;
-        $role->guard_name = 'web';
-        $role->save();
 
+       $role=$this->roleService->addRole($request);
         return $role;
     }
 
@@ -67,15 +70,12 @@ class RoleController extends Controller
      */
     public function update(RolePostRequest $request, Role $role)
     {
-        $name = $request->get('name');
-
         $validated = $request->validated();
         if (!$validated) {
             return 'error';
         }
 
-        $role->name = $name;
-        $role->save();
+        $role=$this->roleService->updateRole($request,$role);
 
         return $role;
     }

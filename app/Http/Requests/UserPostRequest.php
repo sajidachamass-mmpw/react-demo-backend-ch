@@ -26,9 +26,24 @@ class UserPostRequest extends FormRequest
 
         return [
             'name' => 'required',
-            'email' =>'required|unique:users,email,'.$this->user->id,
             'password' => 'required',
             'role' => 'required|exists:roles,id',
+        ]
+            +
+            ($this->isMethod('POST') ? $this->store() : $this->update());
+    }
+    protected function store()
+    {
+        return [
+            'email' => 'required|email|unique:users',
         ];
     }
+
+    protected function update()
+    {
+        return [
+            'email' => 'required|email|unique:users,email,' . $this->user->id,
+        ];
+    }
+
 }

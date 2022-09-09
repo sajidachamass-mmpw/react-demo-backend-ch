@@ -7,11 +7,21 @@ use App\Http\Requests\PermissionPostRequest;
 use App\Http\Resources\PermissionCollection;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
+use App\Services\Permissions\PermissionService;
 
 class PermissionController extends Controller
 {
+
+    protected $permissionService;
+
+    public function __construct(PermissionService $permissionService)
+    {
+        $this->permissionService = $permissionService;
+    }
+
     public function index() {
-        return  ['permissions'=>PermissionCollection::collection(Permission::paginate(10)),'count'=>Permission::count()];
+        $count=$this->permissionService->count(Permission::all());
+        return  ['permissions'=>PermissionCollection::collection(Permission::paginate(10)),'count'=>$count];
     }
 
     /**
@@ -33,16 +43,14 @@ class PermissionController extends Controller
 
     public function store(PermissionPostRequest $request)
     {
-        $name = $request->get('name');
+
         $validated = $request->validated();
 
         if (!$validated) {
             return 'error';
         }
 
-        $permission = new Permission();
-        $permission->name = $name;
-        $permission->save();
+       $permission=$this->permissionService->addPermission($request);
 
         return $permission;
     }
@@ -54,16 +62,12 @@ class PermissionController extends Controller
 
     public function update(PermissionPostRequest $request, Permission $permission)
     {
-        $name = $request->get('name');
-
         $validated = $request->validated();
         if (!$validated) {
             return 'error';
         }
 
-        $permission->name = $name;
-        $permission->save();
-
+        $permission=$this->permissionService->UpdatePermission($request,$permission);
         return $permission;
     }
 

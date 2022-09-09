@@ -7,14 +7,12 @@ use App\Helpers\Gru;
 use App\Helpers\Minion;
 use App\Helpers\UserHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserPostRequest;
+use App\Http\Resources\UserCollection;
 use App\Models\User\User;
 use App\Models\User\UserPublication;
+use App\Services\Users\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User\Role;
-use App\Http\Resources\UserCollection;
-use App\Http\Requests\UserPostRequest;
-use App\Services\UserService;
 
 class UserController extends Controller
 {
@@ -34,7 +32,7 @@ class UserController extends Controller
     public function index()
     {
         $count=$this->userService->count(User::all());
-      return  ['users'=>UserCollection::collection(User::paginate(10)),'count'=>$count;
+      return  ['users'=>UserCollection::collection(User::paginate(10)),'count'=>$count];
 
     }
 
@@ -59,23 +57,12 @@ class UserController extends Controller
     {
         $validated = $request->validated();
 
-
         if (!$validated) {
             return 'error';
         }
-        $selectedRoles = Role::find($request->get('role'))->name;
-
-        $user = User::create(
-            [
-                'name' => $request->get('name'),
-                'email' => $request->get('email'),
-                'password' => Hash::make($request->get('password')),
-                'slug'=>'',
-            ]
-        );
 
 
-        $user->syncRoles($selectedRoles);
+        $user=$this->userService->addUser($request);
 
         return $user ;
     }
@@ -90,6 +77,7 @@ class UserController extends Controller
     public function show(User $user)
     {
 
+        return $user;
     }
 
     /**
@@ -117,14 +105,7 @@ class UserController extends Controller
             return 'error';
         }
 
-        $selectedRoles = Role::find($request->get('role'))->name;
-        $user->update( $request->only( [ 'name', 'email' ] ) );
-
-        if ( $request->has( 'password' ) ) {
-            $user->password = $request->get( 'password' );
-        }
-        $user->save();
-        $user->syncRoles( $selectedRoles );
+        $user=$this->userService->updateUser($request,$user);
 
         return $user;
     }
