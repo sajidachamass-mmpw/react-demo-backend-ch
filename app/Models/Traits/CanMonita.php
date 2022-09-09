@@ -3,15 +3,15 @@
 
 namespace App\Models\Traits;
 
+use App\Models\Roles\Role;
 use App\Models\User\Monita;
-use App\Models\User\Role;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Contracts\Permission;
-use Spatie\Permission\Traits\HasPermissions;
 use function get_class;
+
 trait CanMonita {
 
     /**

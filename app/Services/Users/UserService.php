@@ -2,7 +2,7 @@
 
 namespace App\Services\Users;
 
-use App\Models\User\Role;
+use App\Models\Roles\Role;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Hash;
 

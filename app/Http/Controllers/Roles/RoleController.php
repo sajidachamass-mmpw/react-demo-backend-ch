@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Roles;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RolePostRequest;
-use App\Models\User\Role;
-use Illuminate\Http\Request;
 use App\Http\Resources\RoleCollection;
-use Spatie\Permission\Models\Permission;
+use App\Models\Roles\Role;
 use App\Services\Roles\RoleService;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -65,7 +64,7 @@ class RoleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\RolePostRequest  $request
-     * @param  \App\Models\User\Role  $user
+     * @param  \App\Models\Roles\Role  $user
      * @return \Illuminate\Http\Response
      */
     public function update(RolePostRequest $request, Role $role)
