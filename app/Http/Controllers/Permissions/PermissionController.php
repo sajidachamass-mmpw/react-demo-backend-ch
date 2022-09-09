@@ -11,7 +11,7 @@ use Spatie\Permission\Models\Permission;
 class PermissionController extends Controller
 {
     public function index() {
-        return PermissionCollection::collection(Permission::all());
+        return  ['permissions'=>PermissionCollection::collection(Permission::paginate(10)),'count'=>Permission::count()];
     }
 
     /**

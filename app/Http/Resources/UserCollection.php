@@ -19,7 +19,7 @@ class UserCollection extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
-            'roles'=>$this->getRoleNames()->toArray(),
+            'roles'=>$this->getRoleNames()->toArray()
         ];
     }
 }

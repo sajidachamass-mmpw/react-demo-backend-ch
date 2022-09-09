@@ -14,9 +14,18 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User\Role;
 use App\Http\Resources\UserCollection;
 use App\Http\Requests\UserPostRequest;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +33,8 @@ class UserController extends Controller
      */
     public function index()
     {
-      return  UserCollection::collection(User::all());
+        $count=$this->userService->count(User::all());
+      return  ['users'=>UserCollection::collection(User::paginate(10)),'count'=>$count;
 
     }
 
@@ -130,4 +140,6 @@ class UserController extends Controller
     {
         $user->delete();
     }
+
+
 }
