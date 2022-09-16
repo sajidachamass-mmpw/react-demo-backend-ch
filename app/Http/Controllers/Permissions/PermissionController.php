@@ -21,7 +21,7 @@ class PermissionController extends Controller
 
     public function index() {
         $count=$this->permissionService->count(Permission::all());
-        return  ['permissions'=>PermissionCollection::collection(Permission::paginate(10)),'count'=>$count];
+        return  ['permissions'=>PermissionCollection::collection(Permission::paginate(10)),'permissionsList'=>Permission::all(),'count'=>$count];
     }
 
     /**

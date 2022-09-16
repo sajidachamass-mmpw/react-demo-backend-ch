@@ -19,7 +19,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group( function () {
     Route::resource( 'users', 'App\Http\Controllers\Users\UserController' );
+
     Route::resource( 'roles', 'App\Http\Controllers\Roles\RoleController' );
+    Route::resource( 'rolePermissions', 'App\Http\Controllers\Roles\RolePermissionController' );
+
     Route::resource( 'permissions', 'App\Http\Controllers\Permissions\PermissionController');
 });
 
