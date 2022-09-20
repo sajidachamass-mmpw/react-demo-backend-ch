@@ -24,5 +24,3 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::resource( 'rolePermissions', 'App\Http\Controllers\Roles\RolePermissionController' );
 
     Route::resource( 'permissions', 'App\Http\Controllers\Permissions\PermissionController');
-});
-

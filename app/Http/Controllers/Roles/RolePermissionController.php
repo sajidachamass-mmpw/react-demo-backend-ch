@@ -29,10 +29,26 @@ class RolePermissionController extends Controller
      * @return void
      */
     public function update( Request $request, $id ) {
-        return $id;
-        $role = Role::find($request->get('id'));
+        $role = Role::find($id);
         if($role) {
-            return "hiiii";
+            if ($request->has('permissions')) {
+                $permissions_checked = $request->get('permissions');
+
+                $permissions = Permission::whereIn('id', $permissions_checked)->get();
+
+                $role->syncPermissions($permissions);
+            } else {
+                $permissions = Permission::all();
+
+                foreach ($permissions as $permission) {
+                    $role->revokePermissionTo($permission->name);
+                }
+            }
+
+            return $role;
+        }
+        else {
+            return '404 Error';
         }
 
     }
